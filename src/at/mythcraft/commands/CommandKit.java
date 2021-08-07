@@ -1,20 +1,15 @@
 package at.mythcraft.commands;
 
-import at.mythcraft.chestlock.CustomKey;
-import at.mythcraft.chestlock.KeyInfo;
+import at.mythcraft.main.Model;
 import at.mythcraft.main.PluginMain;
 import at.mythcraft.player.CustomPlayer;
-import at.mythcraft.main.Model;
 import at.mythcraft.player.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class CommandKit implements CommandExecutor {
 
@@ -73,27 +68,8 @@ public class CommandKit implements CommandExecutor {
                     return true;
                 }
                 if(s.equals("debug")) {
-                    CustomPlayer customPlayer = model.getCustomPlayer(sender);
-                    KeyInfo keyInfo = new KeyInfo(customPlayer.getPlayerInfo().incrementKeyCount(), sender.getUniqueId().toString());
-                    model.savePlayerInfo(customPlayer.getPlayerInfo());
-                    CustomKey customKey = new CustomKey(keyInfo, new ItemStack(Material.TRIPWIRE_HOOK));
-                    sender.getInventory().addItem(customKey.getItem());
-                    sender.sendMessage("You received a key");
-                    model.addKey(customKey);
-                    // sender.sendMessage(ChatColor.RED + "This command currently has no usage.");
+                   // Debug command for development
                     return true;
-                }
-            }
-            if(s.equals("destroykey")) {
-                ItemStack item = sender.getInventory().getItemInMainHand();
-                if(item.getType() == Material.TRIPWIRE_HOOK) {
-                    CustomKey key = model.getIfKey(item, sender);
-                    if(key != null) {
-                        model.removeKey(key);
-                    }
-                    sender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                    sender.playSound(sender.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
-                    sender.sendMessage(ChatColor.YELLOW + String.format("Du hast %s zerstört.", key.getKeyInfo().isDuplicate() ? "ein Schlüssel-Duplikat" : "einen Original-Schlüssel"));
                 }
             }
             if(s.equals("patch")) {

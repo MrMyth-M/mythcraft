@@ -1,29 +1,24 @@
 package at.mythcraft.main;
 
-import at.mythcraft.chestlock.*;
 import at.mythcraft.enchantments.CustomEnchantment;
 import at.mythcraft.player.CustomPlayer;
 import at.mythcraft.player.PlayerInfo;
 import com.google.gson.Gson;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Model {
 
     public static final String PLAYERINFO_PATH = "plugins/MythCraft/PlayerInfo/";
-    public static final String CHESTLOCK_PATH = "plugins/MythCraft/ChestLock/";
-    public static final String CHEST_FILE = "chests.json";
     public static final String KEY_FILE = "keys.json";
     private final List<CustomPlayer> customPlayers = new ArrayList<>();
     private final List<Player> passivePlayers = new ArrayList<>();
     private final List<CustomEnchantment> allEnchants = new ArrayList<>();
-    private final List<CustomKey> keys = new ArrayList<>();
-    private final List<LockedChest> lockedChests = new ArrayList<>();
 
     private final List<Player> inShulker = new ArrayList<>();
     private final Map<Player, Player> invseePlayers = new HashMap<>();
@@ -65,58 +60,6 @@ public class Model {
         PlayerInfo info = new PlayerInfo(player.getUniqueId().toString(), player.getDisplayName());
         savePlayerInfo(info);
         return info;
-    }
-
-    public void loadKeys() {
-        File file = new File(CHESTLOCK_PATH + KEY_FILE);
-        List<KeyInfo> keyInfos = new ArrayList<>();
-        if(file.exists() && file.length() != 0) {
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-                keyInfos = Arrays.asList(gson.fromJson(in, KeyInfo[].class));
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-        for(KeyInfo info : keyInfos) {
-            CustomKey key = new CustomKey(info, new ItemStack(Material.TRIPWIRE_HOOK));
-            keys.add(key);
-        }
-        System.out.println("Loaded KEYS from " + file.getAbsolutePath());
-    }
-
-    public void loadLockedChests() {
-        File file = new File(CHESTLOCK_PATH + CHEST_FILE);
-        List<KeyInfo> keyInfos = new ArrayList<>();
-        List<LockedChest> chests = new ArrayList<>();
-        if(file.exists() && file.length() != 0) {
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-                keyInfos = Arrays.asList(gson.fromJson(in, KeyInfo[].class));
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-        for(KeyInfo info : keyInfos) {
-            lockedChests.add(new LockedChest(info));
-        }
-        System.out.println("Loaded CHESTS from " + file.getAbsolutePath());
-    }
-
-    public void saveKeyInfos(List list, String fileName) {
-        File file = new File(CHESTLOCK_PATH + fileName);
-        List<KeyInfo> keyInfos = new ArrayList<>();
-        for(Object o : list) {
-            KeyInfoApplicable keyInfo = (KeyInfoApplicable) o;
-            System.out.println("SAVED: " + keyInfo);
-            keyInfos.add(keyInfo.getKeyInfo());
-        }
-        try(FileWriter fw = new FileWriter(file)) {
-            gson.toJson(keyInfos, fw);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void savePlayerInfo(PlayerInfo info) {
@@ -185,62 +128,5 @@ public class Model {
 
     public boolean isInShulker(Player sender) {
         return this.inShulker.contains(sender);
-    }
-
-    public LockedChest getChestByLocation(Location loc) {
-        for(LockedChest chest : lockedChests) {
-            if(chest.getKeyInfo().getLocation().matches(new CustomLocation(loc.getX(), loc.getY(), loc.getZ()))) {
-                return chest;
-            }
-        }
-        return null;
-    }
-
-    public List<LockedChest> getLockedChests() {
-        return this.lockedChests;
-    }
-
-    public void addLockedChest(LockedChest chest) {
-        this.lockedChests.add(chest);
-        this.saveKeyInfos(lockedChests, CHEST_FILE);
-    }
-
-    public void removeLockedChest(LockedChest chest) {
-        this.lockedChests.remove(chest);
-    }
-
-    public CustomKey getKeyById(String playerUuid, int keyId, boolean duplicate) {
-        for(CustomKey key : keys) {
-            if(key.getKeyInfo().getOwnerUUID().equals(playerUuid) && key.getKeyInfo().getKeyId() == keyId && key.getKeyInfo().isDuplicate() == duplicate) {
-                return key;
-            }
-        }
-        return  null;
-    }
-
-    public void addKey(CustomKey key) {
-        if(!keys.contains(key)) {
-            this.keys.add(key);
-            this.saveKeyInfos(keys, KEY_FILE);
-        }
-    }
-
-    public List<CustomKey> getKeys() {
-        return keys;
-    }
-
-    public CustomKey getIfKey(ItemStack item, Player player) {
-        if(item.getType() == Material.TRIPWIRE_HOOK && item.hasItemMeta() && item.getItemMeta().hasLore()) {
-            String lore = item.getItemMeta().getLore().toString();
-            int id = Integer.parseInt(lore.substring(9, 10));
-            CustomKey key = getKeyById(player.getUniqueId().toString(), id, lore.contains("Duplicate"));
-            return key;
-        }
-        return null;
-    }
-
-    public void removeKey(CustomKey key) {
-        this.keys.remove(key);
-        saveKeyInfos(keys, KEY_FILE);
     }
 }

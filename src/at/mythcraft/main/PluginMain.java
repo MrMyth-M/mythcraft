@@ -25,12 +25,10 @@ public class PluginMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BedListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(this), this);
         getServer().getPluginManager().registerEvents(new ChatListener(model), this);
-        getServer().getPluginManager().registerEvents(new ChestListener(model), this);
         getServer().getPluginManager().registerEvents(new EnchantListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(model), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(model), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
-        getServer().getPluginManager().registerEvents(new SmithingListener(model), this);
 
         /** Command Kits **/
         CommandKit commandKit = new CommandKit(model);
@@ -52,11 +50,6 @@ public class PluginMain extends JavaPlugin {
         getCommand("overworld").setExecutor(playerCheck);
         getCommand("invsee").setExecutor(playerCheck);
         getCommand("enderchest").setExecutor(playerCheck);
-
-        model.loadKeys();
-        model.loadLockedChests();
-        System.out.println(model.getKeys());
-        System.out.println(model.getLockedChests());
 
         MyEnchants customEnchants = new MyEnchants(model);
         customEnchants.register();
