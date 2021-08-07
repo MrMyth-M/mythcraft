@@ -1,0 +1,46 @@
+name: MythCraft
+version: 0.6
+api-version: 1.16
+main: at.mythcraft.main.PluginMain
+author: MrMyth
+description: Ein Plugin spezifisch für den MrMyth Commmunity Server.
+commands:
+  pvp:
+    description: Changes the PVP settings for current world.
+    usage: /pvp
+  nick:
+    description: Sets your nickname and saves it.
+    usage: /nick
+  role:
+    description: Set the role of a user.
+    usage: /role
+  broadcast:
+    description: Broadcast a message throughout the server.
+    usage: /broadcast
+  nether:
+    description: Lists all players that are currently in the Nether.
+    usage: /nether
+  end:
+    description: Lists all players that are currently in the End Dimension.
+    usage: /end
+  overworld:
+    description: Lists all players that are currently in the overworld.
+    usage: /overworld
+  patch:
+    description: Sends a patch report of the latest plugin patch to the user.
+    usage: /patch
+  invsee:
+    description: Lets one see a players inventory.
+    usage: /invsee
+  enderchest:
+    description: Views the content of a player Enderchest.
+    usage: /enderchest
+  passive:
+    description: Toggle into non-PVP (passive) mode.
+    usage: /passive
+  debug:
+    description: A debug command.
+    usage: /debug
+  destroykey:
+    description: Destroys key in hand & removes it.
+    usage: /destroykey

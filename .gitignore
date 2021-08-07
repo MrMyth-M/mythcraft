@@ -1,0 +1,11 @@
+# Default ignored files
+/workspace.xml
+/out
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
+/.idea/libraries/spigot_1_16_5.xml
+/MythCraft.iml
+/.idea/modules.xml
+/.idea/misc.xml
+/.idea/artifacts/MythCraft_jar.xml
+/.idea/libraries/gson_2_8_6.xml
