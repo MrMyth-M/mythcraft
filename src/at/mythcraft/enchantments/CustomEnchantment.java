@@ -5,6 +5,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Set;
+
 public abstract class CustomEnchantment extends Enchantment {
 
     private String name;
@@ -25,11 +27,23 @@ public abstract class CustomEnchantment extends Enchantment {
         return false;
     }
 
+    public boolean conflictsWithAnyOf(Set<Enchantment> enchantments) {
+        boolean conflicts = false;
+        for(Enchantment enchantment : enchantments) {
+            if(this.conflictsWith(enchantment)) {
+                conflicts = true;
+            }
+        }
+        return conflicts;
+    }
+
     @Override
     public abstract boolean conflictsWith(Enchantment enchantment);
 
     @Override
     public abstract boolean canEnchantItem(ItemStack itemStack);
+
+    public abstract int getEnchantmentChance(int xp);
 
     public String getName() {
         return name;

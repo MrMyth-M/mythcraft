@@ -1,6 +1,6 @@
 name: MythCraft
 version: 0.6
-api-version: 1.16
+api-version: 1.17
 main: at.mythcraft.main.PluginMain
 author: MrMyth
 description: Ein Plugin spezifisch für den MrMyth Commmunity Server.

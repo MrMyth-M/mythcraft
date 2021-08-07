@@ -25,10 +25,11 @@ public class PluginMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BedListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(this), this);
         getServer().getPluginManager().registerEvents(new ChatListener(model), this);
-        getServer().getPluginManager().registerEvents(new EnchantListener(), this);
+        getServer().getPluginManager().registerEvents(new EnchantListener(model), this);
         getServer().getPluginManager().registerEvents(new EntityListener(model), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(model), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        getServer().getPluginManager().registerEvents(new MoveListener(), this);
 
         /** Command Kits **/
         CommandKit commandKit = new CommandKit(model);

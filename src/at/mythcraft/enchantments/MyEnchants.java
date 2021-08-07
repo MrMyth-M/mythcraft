@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class MyEnchants {
     public static final CustomEnchantment HEATED = new HeatedEnchantment();
     public static final CustomEnchantment LUMBER = new LumberEnchantment();
+    public static final CustomEnchantment HEAT_WALKER = new HeatWalkerEnchantment();
 
     private Model model;
 
@@ -24,10 +25,12 @@ public class MyEnchants {
         if(!registered) {
             registerCustomEnchantment(HEATED);
             registerCustomEnchantment(LUMBER);
+            registerCustomEnchantment(HEAT_WALKER);
         }
         if(model.getAllEnchants().isEmpty()) {
             model.addEnchant(HEATED);
             model.addEnchant(LUMBER);
+            model.addEnchant(HEAT_WALKER);
         }
     }
 
@@ -37,7 +40,7 @@ public class MyEnchants {
             Field fieldAcceptingNew = Enchantment.class.getDeclaredField("acceptingNew");
             fieldAcceptingNew.setAccessible(true);
             fieldAcceptingNew.set(null, true);
-            System.out.println("Registering enchantment");
+            System.out.println("Registering enchantment " + enchantment.getName());
             Enchantment.registerEnchantment(enchantment);
         } catch (Exception e) {
             registered = false;

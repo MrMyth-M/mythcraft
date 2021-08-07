@@ -1,6 +1,8 @@
 package at.mythcraft.listeners;
 
+import at.mythcraft.enchantments.CustomEnchantment;
 import at.mythcraft.enchantments.MyEnchants;
+import at.mythcraft.main.Model;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -15,36 +17,28 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EnchantListener implements Listener {
 
+    private Model model;
+
+    public EnchantListener(Model model) {
+        this.model = model;
+    }
+
     @EventHandler
     public void onPlayerItemEnchant(EnchantItemEvent e) {
         ItemStack item = e.getItem();
-        String itemName = item.getType().name();
-        if(itemName.contains("PICKAXE")) {
-            if(!e.getEnchantsToAdd().containsKey(Enchantment.SILK_TOUCH) && !e.getEnchantsToAdd().containsKey(Enchantment.LOOT_BONUS_BLOCKS)) {
-                int percentage = (int)((e.getExpLevelCost() - 10) * 1.8);
-                int random = ThreadLocalRandom.current().nextInt(0, 100);
-                if(random < percentage) {
-                    item = enchantItem(item, MyEnchants.HEATED);
-                    item.addEnchantments(e.getEnchantsToAdd());
+        for(CustomEnchantment enchantment : model.getAllEnchants()) {
+            // Check if enchantment is applicable for item
+            if(enchantment.canEnchantItem(item)) {
+                // Check if enchantment conflicts with enchantments already added
+                if(!enchantment.conflictsWithAnyOf(e.getEnchantsToAdd().keySet())) {
+                    int random = ThreadLocalRandom.current().nextInt(0, 100);
+                    if(random < enchantment.getEnchantmentChance(e.getExpLevelCost())) {
+                        item = enchantItem(item, enchantment);
+                        item.addEnchantments(e.getEnchantsToAdd());
+                    }
                 }
             }
         }
-        else if(itemName.contains("AXE") && !itemName.contains("PICK")) {
-            int percentage = (e.getExpLevelCost() - 10);
-            int random = ThreadLocalRandom.current().nextInt(0, 100);
-            if(random < percentage) {
-                item = enchantItem(item, MyEnchants.LUMBER);
-                item.addEnchantments(e.getEnchantsToAdd());
-            }
-        }
-        /*else if(itemName.contains("BOOK")) {
-            int percentage = 50;
-            int random = ThreadLocalRandom.current().nextInt(0, 100);
-            if(random < percentage) {
-                item = enchantItem(item, CustomEnchants.LUMBER);
-                item.addEnchantments(e.getEnchantsToAdd());
-            }
-        }*/
     }
 
     private ItemStack enchantItem(ItemStack item, Enchantment enchantment) {

@@ -32,4 +32,9 @@ public class LumberEnchantment extends CustomEnchantment {
             return true;
         return false;
     }
+
+    @Override
+    public int getEnchantmentChance(int xp) {
+        return xp - 10;
+    }
 }
