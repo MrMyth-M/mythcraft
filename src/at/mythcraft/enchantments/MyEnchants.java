@@ -11,6 +11,8 @@ public class MyEnchants {
     public static final CustomEnchantment HEATED = new HeatedEnchantment();
     public static final CustomEnchantment LUMBER = new LumberEnchantment();
     public static final CustomEnchantment HEAT_WALKER = new HeatWalkerEnchantment();
+    public static final CustomEnchantment SLIMEY = new SlimeyEnchantment();
+
 
     private Model model;
 
@@ -19,18 +21,19 @@ public class MyEnchants {
     }
 
     public void register() {
-        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(HEATED) &&
-                Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(LUMBER);
+        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(HEATED);
 
         if(!registered) {
             registerCustomEnchantment(HEATED);
             registerCustomEnchantment(LUMBER);
             registerCustomEnchantment(HEAT_WALKER);
+            registerCustomEnchantment(SLIMEY);
         }
         if(model.getAllEnchants().isEmpty()) {
             model.addEnchant(HEATED);
             model.addEnchant(LUMBER);
             model.addEnchant(HEAT_WALKER);
+            model.addEnchant(SLIMEY);
         }
     }
 

@@ -11,6 +11,11 @@ public class LumberEnchantment extends CustomEnchantment {
     }
 
     @Override
+    public int getLevel(int xp) {
+        return 0;
+    }
+
+    @Override
     public boolean conflictsWith(Enchantment enchantment) {
         return false;
     }

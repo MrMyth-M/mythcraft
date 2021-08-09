@@ -4,6 +4,7 @@ import at.mythcraft.enchantments.CustomEnchantment;
 import at.mythcraft.enchantments.MyEnchants;
 import at.mythcraft.main.Model;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +34,7 @@ public class EnchantListener implements Listener {
                 if(!enchantment.conflictsWithAnyOf(e.getEnchantsToAdd().keySet())) {
                     int random = ThreadLocalRandom.current().nextInt(0, 100);
                     if(random < enchantment.getEnchantmentChance(e.getExpLevelCost())) {
-                        item = enchantItem(item, enchantment);
+                        item = enchantItem(item, enchantment, enchantment.getLevel(e.getExpLevelCost()));
                         item.addEnchantments(e.getEnchantsToAdd());
                     }
                 }
@@ -41,10 +42,10 @@ public class EnchantListener implements Listener {
         }
     }
 
-    private ItemStack enchantItem(ItemStack item, Enchantment enchantment) {
+    private ItemStack enchantItem(ItemStack item, Enchantment enchantment, int level) {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + enchantment.getName());
+        lore.add(ChatColor.GRAY + enchantment.getName() + getLevelString(level));
         if(meta.hasLore()) {
             for(String st : meta.getLore()) {
                 lore.add(st);
@@ -52,7 +53,23 @@ public class EnchantListener implements Listener {
         }
         meta.setLore(lore);
         item.setItemMeta(meta);
-        item.addUnsafeEnchantment(enchantment, 1);
+        item.addUnsafeEnchantment(enchantment, level == 0 ? 1 : level);
         return item;
+    }
+
+    private String getLevelString(int level) {
+        switch(level) {
+            case 1:
+                return " I";
+            case 2:
+                return " II";
+            case 3:
+                return " III";
+            case 4:
+                return " IV";
+            case 5:
+                return " V";
+            default: return "";
+        }
     }
 }

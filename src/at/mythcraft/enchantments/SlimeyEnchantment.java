@@ -4,10 +4,10 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-public class HeatedEnchantment extends CustomEnchantment {
+public class SlimeyEnchantment extends CustomEnchantment {
 
-    public HeatedEnchantment() {
-        super("heated", "Heated", 1);
+    public SlimeyEnchantment() {
+        super("slimey", "Slimey", 1);
     }
 
     @Override
@@ -17,31 +17,33 @@ public class HeatedEnchantment extends CustomEnchantment {
 
     @Override
     public boolean conflictsWith(Enchantment enchantment) {
-        if(enchantment.getKey().equals(Enchantment.SILK_TOUCH.getKey()))
+        if(enchantment.getKey().equals(MyEnchants.HEAT_WALKER.getKey())) {
             return true;
-        if(enchantment.getKey().equals(Enchantment.LOOT_BONUS_BLOCKS.getKey()))
+        }
+        if(enchantment.getKey().equals(Enchantment.FROST_WALKER.getKey())) {
             return true;
+        }
         return false;
     }
 
     @Override
     public boolean canEnchantItem(ItemStack itemStack) {
         Material type = itemStack.getType();
-        if(type == Material.STONE_PICKAXE)
+        if(type == Material.LEATHER_BOOTS)
             return true;
-        if(type == Material.GOLDEN_PICKAXE)
+        if(type == Material.IRON_BOOTS)
             return true;
-        if(type == Material.IRON_PICKAXE)
+        if(type == Material.GOLDEN_BOOTS)
             return true;
-        if(type == Material.DIAMOND_PICKAXE)
+        if(type == Material.DIAMOND_BOOTS)
             return true;
-        if(type == Material.NETHERITE_PICKAXE)
+        if(type == Material.NETHERITE_BOOTS)
             return true;
         return false;
     }
 
     @Override
     public int getEnchantmentChance(int xp) {
-        return (int)((xp - 10) * 1.8);
+        return 100;
     }
 }

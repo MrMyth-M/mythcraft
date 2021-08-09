@@ -29,7 +29,8 @@ public class PluginMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityListener(model), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(model), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
-        getServer().getPluginManager().registerEvents(new MoveListener(), this);
+        getServer().getPluginManager().registerEvents(new HeatWalkerListener(), this);
+        getServer().getPluginManager().registerEvents(new SlimeyListener(), this);
 
         /** Command Kits **/
         CommandKit commandKit = new CommandKit(model);

@@ -37,6 +37,8 @@ public abstract class CustomEnchantment extends Enchantment {
         return conflicts;
     }
 
+    public abstract int getLevel(int xp);
+
     @Override
     public abstract boolean conflictsWith(Enchantment enchantment);
 
