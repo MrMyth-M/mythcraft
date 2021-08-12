@@ -21,10 +21,10 @@ public class HeatWalkerListener implements Listener {
         World world = player.getWorld();
         if(player.getInventory().getItem(EquipmentSlot.FEET) != null) {
             if(player.getInventory().getItem(EquipmentSlot.FEET).getItemMeta().hasEnchant(MyEnchants.HEAT_WALKER)) {
-                int enchantLevel = player.getInventory().getItem(EquipmentSlot.FEET).getItemMeta().getEnchantLevel(MyEnchants.HEAT_WALKER);
-                Pair<Integer, Integer> bonus = HeatWalkerEnchantment.getBlockBonus(enchantLevel);
                 Block standingOn = world.getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY() - 1, player.getLocation().getBlockZ());
                 if(standingOn.getType() == Material.LAVA) {
+                    int enchantLevel = player.getInventory().getItem(EquipmentSlot.FEET).getItemMeta().getEnchantLevel(MyEnchants.HEAT_WALKER);
+                    Pair<Integer, Integer> bonus = HeatWalkerEnchantment.getBlockBonus(enchantLevel);
                     player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.05f, 1f);
                     for(int x = standingOn.getX() + bonus.getFirst(); x < standingOn.getX() + bonus.getSecond(); x++) {
                         for (int z = standingOn.getZ() + bonus.getFirst(); z < standingOn.getZ() + bonus.getSecond(); z++) {

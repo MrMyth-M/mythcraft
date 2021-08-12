@@ -1,10 +1,8 @@
 package at.mythcraft.listeners;
 
 import at.mythcraft.enchantments.CustomEnchantment;
-import at.mythcraft.enchantments.MyEnchants;
 import at.mythcraft.main.Model;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,7 +29,7 @@ public class EnchantListener implements Listener {
             // Check if enchantment is applicable for item
             if(enchantment.canEnchantItem(item)) {
                 // Check if enchantment conflicts with enchantments already added
-                if(!enchantment.conflictsWithAnyOf(e.getEnchantsToAdd().keySet())) {
+                if(!enchantment.conflictsWithAnyOf(e.getEnchantsToAdd().keySet()) && !enchantment.conflictsWithAnyOf(item.getEnchantments().keySet())) {
                     int random = ThreadLocalRandom.current().nextInt(0, 100);
                     if(random < enchantment.getEnchantmentChance(e.getExpLevelCost())) {
                         item = enchantItem(item, enchantment, enchantment.getLevel(e.getExpLevelCost()));

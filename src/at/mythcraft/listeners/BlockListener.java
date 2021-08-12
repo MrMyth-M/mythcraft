@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +21,6 @@ import java.util.Map;
 
 public class BlockListener implements Listener {
 
-    private final Plugin plugin;
     private final List<Block> blockChain = new ArrayList<>();
     private final Map<Material, ItemStack> heatedBlocks = new HashMap<>() {{
         put(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT));
@@ -31,10 +31,6 @@ public class BlockListener implements Listener {
         put(Material.NETHERRACK, new ItemStack(Material.BLACKSTONE));
         put(Material.CLAY, new ItemStack(Material.WHITE_TERRACOTTA));
     }};
-
-    public BlockListener(Plugin plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -58,7 +54,7 @@ public class BlockListener implements Listener {
                 if(blockName.contains("LOG") || blockName.contains("STEM")) {
                     blockChain.add(block);
                     checkNeighbours(block.getLocation(), block.getType());
-                    updateDurability(itemInHand, 1, blockChain.size());
+                    updateDurability(player, itemInHand, 1, blockChain.size());
                     blockChain.forEach(b -> {
                         b.breakNaturally(itemInHand);
                         Location loc = b.getLocation();
@@ -93,11 +89,16 @@ public class BlockListener implements Listener {
         return loc.getWorld().getBlockAt((int)(loc.getX() + x - 1), (int)(loc.getY() + y - 1), (int)(loc.getZ() + z - 1));
     }
 
-    private void updateDurability(ItemStack itemInHand, int resistance, int amountOfBlocks) {
+    private void updateDurability(Player player, ItemStack itemInHand, int resistance, int amountOfBlocks) {
         int unbreaking = itemInHand.getEnchantments().getOrDefault(Enchantment.DURABILITY, 0) + 1;
         ItemMeta meta = itemInHand.getItemMeta();
+        int itemMaxHp = itemInHand.getType().getMaxDurability();
         int existingDamage = ((Damageable) meta).getDamage();
-        ((Damageable) meta).setDamage((itemInHand.getType().getMaxDurability() - (itemInHand.getType().getMaxDurability() - existingDamage) + (amountOfBlocks / (resistance * unbreaking))));
+        ((Damageable) meta).setDamage(((Damageable) meta).getDamage() + (amountOfBlocks / (resistance * unbreaking)));
+        if(((Damageable) meta).getDamage() >= itemMaxHp) {
+            player.getInventory().setItemInMainHand(null);
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1f, 1f);
+        }
         itemInHand.setItemMeta(meta);
     }
 }

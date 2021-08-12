@@ -4,10 +4,10 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-public class SlimeyEnchantment extends CustomEnchantment {
+public class TelepathyEnchantment extends CustomEnchantment {
 
-    public SlimeyEnchantment() {
-        super("slimey", "Slimey", 1);
+    public TelepathyEnchantment() {
+        super("telepathy", "Telepathy", 1);
     }
 
     @Override

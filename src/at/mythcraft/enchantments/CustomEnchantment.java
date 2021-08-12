@@ -9,8 +9,8 @@ import java.util.Set;
 
 public abstract class CustomEnchantment extends Enchantment {
 
-    private String name;
-    private int maxLvl;
+    private final String name;
+    private final int maxLvl;
 
     public CustomEnchantment(String namespace, String name, int maxLvl) {
         super(NamespacedKey.minecraft(namespace));

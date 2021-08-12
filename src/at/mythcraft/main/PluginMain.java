@@ -23,7 +23,7 @@ public class PluginMain extends JavaPlugin {
         /** Add plugin listeners **/
         getServer().getPluginManager().registerEvents(new AnvilListener(model), this);
         getServer().getPluginManager().registerEvents(new BedListener(), this);
-        getServer().getPluginManager().registerEvents(new BlockListener(this), this);
+        getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(model), this);
         getServer().getPluginManager().registerEvents(new EnchantListener(model), this);
         getServer().getPluginManager().registerEvents(new EntityListener(model), this);
